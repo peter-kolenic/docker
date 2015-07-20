@@ -1,7 +1,6 @@
 FROM debian
 
 MAINTAINER Fai Fung <ffung@xebia.com>
-MAINTAINER Adriaan de Jonge <adejonge@xebia.com>
 
 ENV version 5.0.1
 RUN apt-get update 
