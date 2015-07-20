@@ -6,9 +6,7 @@ ENV version 5.0.1
 RUN apt-get update 
 RUN apt-get install -y openjdk-7-jre-headless unzip wget --no-install-recommends
 
-RUN wget https://dist.xebialabs.com/public/distributions/xl-deploy/${version}/xl-deploy-${version}-server-free-edition.zip -O /tmp/xld.zip
-RUN unzip /tmp/xld.zip -d /opt
-RUN rm /tmp/xld.zip
+RUN wget https://dist.xebialabs.com/public/distributions/xl-deploy/${version}/xl-deploy-${version}-server-free-edition.zip -O /tmp/xld.zip && unzip /tmp/xld.zip -d /opt && rm /tmp/xld.zip
 ADD xldeploy.answers /opt/xl-deploy-${version}-server-free-edition/bin/xldeploy.answers 
 
 WORKDIR /opt/xl-deploy-${version}-server-free-edition/bin 
