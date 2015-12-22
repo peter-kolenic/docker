@@ -2,7 +2,7 @@ FROM debian
 
 MAINTAINER Fai Fung <ffung@xebia.com>
 
-ENV version 5.1.1
+ENV version 5.1.3
 RUN apt-get update
 RUN apt-get install -y openjdk-7-jre-headless unzip wget --no-install-recommends
 
