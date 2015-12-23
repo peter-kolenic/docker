@@ -2,11 +2,14 @@ FROM debian:8.2
 
 MAINTAINER Fai Fung <ffung@xebia.com>
 
-ENV version 5.1.3
-RUN apt-get update
-RUN apt-get install -y openjdk-7-jre-headless unzip wget --no-install-recommends
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y openjdk-7-jre-headless unzip wget --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN wget https://dist.xebialabs.com/public/trial/xl-deploy/xl-deploy-${version}-server-trial-edition.zip -O /tmp/xld.zip && unzip /tmp/xld.zip -d /opt && rm /tmp/xld.zip
+ENV version 5.1.3
+RUN wget -q https://dist.xebialabs.com/public/trial/xl-deploy/xl-deploy-${version}-server-trial-edition.zip -O /tmp/xld.zip && \
+    unzip -q /tmp/xld.zip -d /opt && \
+    rm /tmp/xld.zip
 ADD xldeploy.answers /opt/xl-deploy-${version}-server-trial-edition/bin/xldeploy.answers
 
 WORKDIR /opt/xl-deploy-${version}-server-trial-edition/bin
