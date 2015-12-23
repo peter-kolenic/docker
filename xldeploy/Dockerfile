@@ -1,4 +1,4 @@
-FROM debian
+FROM debian:8.2
 
 MAINTAINER Fai Fung <ffung@xebia.com>
 
