@@ -1,27 +1,35 @@
-FROM debian:8.2
+FROM java:8u77-jre-alpine
 
 MAINTAINER Fai Fung <ffung@xebia.com>
 
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y openjdk-7-jre-headless unzip wget --no-install-recommends && \
-    rm -rf /var/lib/apt/lists/*
+ENV version 5.5.0
+ENV root /lib
+ENV home ${root}/xl-deploy-${version}-server 
 
-ENV version 5.1.3
-RUN wget -q https://dist.xebialabs.com/public/trial/xl-deploy/xl-deploy-${version}-server-trial-edition.zip -O /tmp/xld.zip && \
-    unzip -q /tmp/xld.zip -d /opt && \
-    rm /tmp/xld.zip
-ADD xldeploy.answers /opt/xl-deploy-${version}-server-trial-edition/bin/xldeploy.answers
+RUN wget \
+      https://dist.xebialabs.com/public/trial/xl-deploy/xl-deploy-${version}-server-trial-edition.zip \
+      -O /tmp/xld.zip \
+  && unzip \
+      /tmp/xld.zip \
+      -d ${root} \
+  && rm -R \
+      /tmp/xld.zip \
+      ${home}/serviceWrapper \
+      ${home}/samples \
+      ${home}/importablePackages/*
+      
+ADD xldeploy.answers ${home}/bin/xldeploy.answers
 
-WORKDIR /opt/xl-deploy-${version}-server-trial-edition/bin
+WORKDIR ${home}/bin
 RUN ["./run.sh", "-setup", "-reinitialize", "-force", "-setup-defaults", "./bin/xldeploy.answers"]
 
-VOLUME /opt/xl-deploy-${version}-server-trial-edition/conf
-VOLUME /opt/xl-deploy-${version}-server-trial-edition/ext
-VOLUME /opt/xl-deploy-${version}-server-trial-edition/hotfix
-VOLUME /opt/xl-deploy-${version}-server-trial-edition/importablePackages
-VOLUME /opt/xl-deploy-${version}-server-trial-edition/log
-VOLUME /opt/xl-deploy-${version}-server-trial-edition/plugins
-VOLUME /opt/xl-deploy-${version}-server-trial-edition/repository
+VOLUME ["${home}/conf", \ 
+	"${home}/ext", \
+	"${home}/hotfix", \ 
+	"${home}/importablePackages", \
+	"${home}/log", \
+	"${home}/plugins", \ 
+	"${home}/repository"]
 
 EXPOSE 4516
 
