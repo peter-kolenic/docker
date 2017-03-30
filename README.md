@@ -1,3 +1,2 @@
-docker
-======
-Docker experiments
+docker for XL Deploy
+====================

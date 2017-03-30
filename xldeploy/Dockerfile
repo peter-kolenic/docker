@@ -2,35 +2,32 @@ FROM java:8u77-jre-alpine
 
 MAINTAINER Fai Fung <ffung@xebia.com>
 
-ENV version 5.5.0
+ENV version 6.1.0
 ENV root /lib
 ENV home ${root}/xl-deploy-${version}-server 
 
-RUN wget \
-      https://dist.xebialabs.com/public/trial/xl-deploy/xl-deploy-${version}-server-trial-edition.zip \
-      -O /tmp/xld.zip \
-  && unzip \
-      /tmp/xld.zip \
-      -d ${root} \
-  && rm -R \
-      /tmp/xld.zip \
+ADD xl-deploy-${version}-server-trial-edition.tar.gz ${root}
+
+
+RUN rm -R \
       ${home}/serviceWrapper \
       ${home}/samples \
       ${home}/importablePackages/*
-      
+
 ADD xldeploy.answers ${home}/bin/xldeploy.answers
+ADD keystore.jks ${home}/conf/keystore.jks
 
-WORKDIR ${home}/bin
-RUN ["./run.sh", "-setup", "-reinitialize", "-force", "-setup-defaults", "./bin/xldeploy.answers"]
+WORKDIR ${home}
+RUN ["bin/run.sh", "-setup", "-reinitialize", "-force", "-setup-defaults", "bin/xldeploy.answers"]
 
-VOLUME ["${home}/conf", \ 
+VOLUME ["${home}/conf", \
 	"${home}/ext", \
-	"${home}/hotfix", \ 
+	"${home}/hotfix", \
 	"${home}/importablePackages", \
 	"${home}/log", \
-	"${home}/plugins", \ 
+	"${home}/plugins", \
 	"${home}/repository"]
 
 EXPOSE 4516
 
-CMD ["./run.sh"]
+CMD ["bin/run.sh"]

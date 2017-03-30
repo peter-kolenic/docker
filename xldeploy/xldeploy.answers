@@ -1,7 +1,11 @@
 admin.password=password
 jcr.repository.path=repository
 threads.min=3
-ssl=false
+ssl=true
+ssl.mutual=false
+keystore.path=conf/keystore.jks
+keystore.keypassword=changeit
+keystore.password=changeit
 client.session.remember.enabled=true
 http.bind.address=0.0.0.0
 http.context.root=/
